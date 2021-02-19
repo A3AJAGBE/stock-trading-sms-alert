@@ -52,7 +52,14 @@ if percentage > 0.5:
     top3_articles = news_data[:3]
 
     # Get article headline and description
-    article_list = [f"Headline: {article['title']}. \n Desc: {article['description']}" for article in top3_articles ]
-    print(article_list)
+    article_list = [f"Headline: {article['title']}\n Desc: {article['description']}" for article in top3_articles ]
+
+    # Send each article to the user
+    for article in article_list:
+        message = client.messages.create(
+            body=f"{article} From: A3AJAGBE TRADING ALERT",
+            from_=os.environ.get('TWILIO_NUMBER'),
+            to=os.environ.get('MY_NUMBER')
+        )
 
 
