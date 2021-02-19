@@ -33,11 +33,17 @@ before_yesterday_data = data_list[1]
 by_closing_price = before_yesterday_data["4. close"]
 
 # Get the difference and percentage
-difference = abs(float(p_closing_price) - float(by_closing_price))
-percentage = (difference / float(p_closing_price)) * 100
+difference = float(p_closing_price) - float(by_closing_price)
+percentage = abs(round((difference / float(p_closing_price)) * 100))
+up_down = None
+
+if difference > 0:
+    up_down = "🔺"
+else:
+    up_down = "🔻"
 
 # If percentage is greater than 1 get the articles relating to the company
-if percentage > 0.5:
+if percentage >= 1:
     # News Config
     COMPANY_NAME = "Apple Inc"
     NEWS_ENDPOINT = "https://newsapi.org/v2/everything"
@@ -52,7 +58,7 @@ if percentage > 0.5:
     top3_articles = news_data[:3]
 
     # Get article headline and description
-    article_list = [f"Headline: {article['title']}\n Desc: {article['description']}" for article in top3_articles ]
+    article_list = [f"{STOCK_NAME}: {up_down}{percentage}%\nHeadline: {article['title']}\n Desc: {article['description']}" for article in top3_articles]
 
     # Send each article to the user
     for article in article_list:
