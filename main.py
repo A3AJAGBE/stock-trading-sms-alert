@@ -1,7 +1,13 @@
 import os
 import requests
+from twilio.rest import Client
 from dotenv import load_dotenv
 load_dotenv()
+
+# Twilio configs
+account_sid = os.environ['TWILIO_ACCOUNT_SID']
+auth_token = os.environ['TWILIO_AUTH_TOKEN']
+client = Client(account_sid, auth_token)
 
 # Stock Config
 STOCK_NAME = "AAPL"
@@ -43,4 +49,10 @@ if percentage > 0.5:
     news_response = requests.get(NEWS_ENDPOINT, params=NEWS_PARAMETER)
     news_response.raise_for_status()
     news_data = news_response.json()["articles"]
-    print(news_data)
+    top3_articles = news_data[:3]
+
+    # Get article headline and description
+    article_list = [f"Headline: {article['title']}. \n Desc: {article['description']}" for article in top3_articles ]
+    print(article_list)
+
+
