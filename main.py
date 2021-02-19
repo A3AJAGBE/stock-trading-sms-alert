@@ -15,5 +15,10 @@ STOCK_PARAMETER = {
 
 response = requests.get(STOCK_ENDPOINT, params=STOCK_PARAMETER)
 response.raise_for_status()
-data = response.json()
-print(data)
+data = response.json()["Time Series (Daily)"]
+data_list = [value for (key, value) in data.items()]
+
+# Previous day closing price
+previous_day_data = data_list[0]
+p_closing_price = previous_day_data["4. close"]
+print(p_closing_price)
